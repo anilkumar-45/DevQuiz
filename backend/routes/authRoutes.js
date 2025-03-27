@@ -1,21 +1,11 @@
 const express = require("express");
-const { check } = require("express-validator");
-const { signup, login } = require("../controllers/authController");
+const { register, login, getProfile } = require("../controllers/authController");
+const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post(
-  "/signup",
-  [
-    check("name", "Name is required").not().isEmpty(),
-    check("email", "Please include a valid email").isEmail(),
-    check("password", "Password must be at least 6 characters").isLength({
-      min: 6,
-    }),
-  ],
-  signup
-);
-
-router.post("/login", login);
+router.post("/register", register);  // User Registration
+router.post("/login", login);        // User Login
+router.get("/profile", protect, getProfile);  // Get User Profile (Protected)
 
 module.exports = router;
