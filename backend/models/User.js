@@ -43,5 +43,13 @@ UserSchema.methods.updateScore = async function (quizId, newScore) {
   await this.save();
 };
 
+UserSchema.statics.getLeaderboard = async function () {
+  return this.find()
+    .select("name highestScore")
+    .sort({ highestScore: -1 })
+    .limit(10); // Top 10 users
+};
+
+
 
 module.exports = mongoose.model("User", UserSchema);
