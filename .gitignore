@@ -1,0 +1,33 @@
+# Node.js dependencies (backend & frontend)
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Backend-specific ignores
+backend/node_modules/
+backend/dist/
+backend/.cache/
+backend/.env
+
+# Frontend-specific ignores
+frontend/node_modules/
+frontend/.next/
+frontend/.parcel-cache/
+frontend/build/
+
+# Logs
+logs/
+*.log
+
+# Editor/OS-specific files
+.vscode/
+.DS_Store
+Thumbs.db
