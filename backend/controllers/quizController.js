@@ -1,5 +1,5 @@
 const Quiz = require("../models/Quiz");
-
+const User = require("../models/User");
 // Create a new quiz
 exports.createQuiz = async (req, res) => {
   try {
@@ -51,7 +51,7 @@ exports.getQuizById = async (req, res) => {
   }
 };
 
-// Add questions to an existing quiz 
+// Add questions to an existing quiz
 exports.addQuestion = async (req, res) => {
   try {
     const { quizId, questions } = req.body;
@@ -104,6 +104,47 @@ exports.attemptQuiz = async (req, res) => {
     res.json({ message: "Quiz completed", score, totalQuestions });
   } catch (error) {
     console.error("Error in quiz attempt:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.submitQuiz = async (req, res) => {
+  const { quizId } = req.params;
+  const { answers } = req.body;
+  const userId = req.user.id; // User from token
+
+  try {
+    const quiz = await Quiz.findById(quizId);
+    if (!quiz) return res.status(404).json({ message: "Quiz not found" });
+
+    // Calculate the score
+    let score = 0;
+    quiz.questions.forEach((question, index) => {
+      if (question.correctAnswer === answers[index]) {
+        score++;
+      }
+    });
+
+    // Fetch the user
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    console.log("Before update:", user.scores);
+
+    // Ensure scores array exists
+    if (!user.scores) {
+      user.scores = [];
+    }
+
+    // Save new score
+    user.scores.push({ quizId, score });
+    await user.save();
+
+    console.log("After update:", user.scores);
+
+    res.json({ message: "Quiz submitted successfully", score });
+  } catch (error) {
+    console.error("Quiz submission error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
