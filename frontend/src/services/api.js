@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAuthToken, getUserId } from "../utils/auth";
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "https://devquizserver.onrender.com/api";
 
 // Create an Axios instance
 const api = axios.create({
