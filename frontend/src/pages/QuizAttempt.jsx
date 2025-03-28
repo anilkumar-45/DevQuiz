@@ -30,7 +30,6 @@ const QuizAttempt = () => {
   const handleSubmit = async () => {
     try {
       const quizData = {
-        userId: "replace_with_user_id", // Replace with actual user ID from auth
         quizId: id,
         answers: Object.keys(answers).map((questionId) => ({
           questionId,
@@ -69,7 +68,10 @@ const QuizAttempt = () => {
           ))}
         </div>
       ))}
-      <button onClick={handleSubmit} className="bg-blue-500 text-white p-2 rounded mt-4">
+      <button
+        onClick={handleSubmit}
+        className="bg-blue-500 text-white p-2 rounded mt-4"
+      >
         Submit Quiz
       </button>
     </div>

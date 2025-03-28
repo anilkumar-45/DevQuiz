@@ -8,9 +8,9 @@ exports.getLeaderboard = async (req, res) => {
 
     const leaderboard = users
       .map((user) => {
-        const highestScore = user.scores.length
-          ? Math.max(...user.scores.map((score) => score.score || 0))
-          : 0;
+        const highestScore =
+          user.scores?.reduce((max, score) => Math.max(max, score.score), 0) ||
+          0;
 
         return {
           name: user.name,

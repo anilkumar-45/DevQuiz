@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getQuizzes } from "../services/api";
+import Navbar from "../components/Navbar";
 
 const QuizList = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -18,6 +19,7 @@ const QuizList = () => {
 
   return (
     <div className="p-4">
+      <Navbar />
       <h2 className="text-xl font-bold mb-4">Available Quizzes</h2>
       <ul>
         {quizzes.map((quiz) => (

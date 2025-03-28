@@ -29,7 +29,10 @@ UserSchema.virtual("highestScore").get(function () {
 });
 
 UserSchema.methods.updateScore = async function (quizId, newScore) {
-  const existingScore = this.scores.find((score) => score.quizId.toString() === quizId.toString());
+  quizId = new mongoose.Types.ObjectId(quizId);
+  const existingScore = this.scores.find((score) =>
+    score.quizId.equals(quizId)
+  );
 
   if (existingScore) {
     if (newScore > existingScore.score) {
@@ -49,7 +52,5 @@ UserSchema.statics.getLeaderboard = async function () {
     .sort({ highestScore: -1 })
     .limit(10); // Top 10 users
 };
-
-
 
 module.exports = mongoose.model("User", UserSchema);

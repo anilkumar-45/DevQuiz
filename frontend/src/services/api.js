@@ -1,8 +1,7 @@
 import axios from "axios";
+import { getAuthToken, getUserId } from "../utils/auth";
 
 const API_BASE_URL = "http://localhost:5000/api";
-
-const getAuthToken = () => localStorage.getItem("token");
 
 // Create an Axios instance
 const api = axios.create({
@@ -12,6 +11,7 @@ const api = axios.create({
   },
 });
 
+// Attach token to every request if available
 api.interceptors.request.use(
   (config) => {
     const token = getAuthToken();
@@ -26,22 +26,27 @@ api.interceptors.request.use(
 // Auth APIs
 export const loginUser = (userData) => api.post("/auth/login", userData);
 export const registerUser = (userData) => api.post("/auth/register", userData);
-export const getProfile = (token) =>
-  api.get("/auth/profile", { headers: { Authorization: `Bearer ${token}` } });
+export const getProfile = () => api.get("/auth/profile");
 
 // Quiz APIs
-export const getQuizzes = () =>
-  api.get("/quizzes", {
-    headers: { Authorization: `Bearer ${getAuthToken()}` },
-  });
-export const getQuizById = (quizId) =>
-  api.get(`/quizzes/${quizId}`, {
-    headers: { Authorization: `Bearer ${getAuthToken()}` },
-  });
-export const attemptQuiz = (quizData) => api.post("/quizzes/attempt", quizData);
+export const getQuizzes = () => api.get("/quizzes");
+export const getQuizById = (quizId) => api.get(`/quizzes/${quizId}`);
 
-export const submitQuiz = (quizId, answers) =>
-  api.post(`/quizzes/${quizId}/submit`, { answers });
+export const attemptQuiz = (quizData) => {
+  const userId = getUserId();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+  return api.post("/quizzes/attempt", { userId, ...quizData });
+};
+
+export const submitQuiz = (quizId, answers) => {
+  const userId = getUserId();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+  return api.post(`/quizzes/${quizId}/submit`, { userId, answers });
+};
 
 // Leaderboard API
 export const getLeaderboard = () => api.get("/leaderboard");
