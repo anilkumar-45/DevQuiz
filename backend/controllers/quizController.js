@@ -1,6 +1,6 @@
 const Quiz = require("../models/Quiz");
 const User = require("../models/User");
-// Create a new quiz
+
 exports.createQuiz = async (req, res) => {
   try {
     const { title, category, difficulty, questions } = req.body;
@@ -27,7 +27,6 @@ exports.createQuiz = async (req, res) => {
   }
 };
 
-// Get all quizzes
 exports.getAllQuizzes = async (req, res) => {
   try {
     const quizzes = await Quiz.find();

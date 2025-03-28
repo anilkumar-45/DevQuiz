@@ -6,7 +6,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import PrivateRoute from "./routes/PrivateRoute";
-
+// routing
 function App() {
   return (
     <AuthProvider>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getLeaderboard } from "../services/api";
-import Navbar from "../components/Navbar";
+
 
 const Leaderboard = () => {
   const [leaders, setLeaders] = useState([]);
@@ -20,7 +20,6 @@ const Leaderboard = () => {
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
-      <Navbar/>
       <h2 className="text-2xl font-bold text-center mb-4">Leaderboard</h2>
       {leaders.length > 0 ? (
         <table className="w-full border-collapse border border-gray-200">

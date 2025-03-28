@@ -3,7 +3,7 @@ const { register, login, getProfile } = require("../controllers/authController")
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
-
+// routes
 router.post("/register", register);  
 router.post("/login", login);       
 router.get("/profile", protect, getProfile);  

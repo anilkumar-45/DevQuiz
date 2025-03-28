@@ -3,7 +3,7 @@ const {
   createQuiz,
   getAllQuizzes,
   getQuizById,
-  addQuestion, // Now it exists
+  addQuestion, 
   attemptQuiz,
   submitQuiz,
 } = require("../controllers/quizController");
@@ -13,7 +13,7 @@ const router = express.Router();
 router.post("/create", protect, admin, createQuiz);
 router.get("/", protect, getAllQuizzes);
 router.get("/:id", protect, getQuizById);
-router.post("/add", protect, admin, addQuestion); // This was causing the error earlier
+router.post("/add", protect, admin, addQuestion); 
 router.post("/attempt", protect, attemptQuiz);
 router.post("/:quizId/submit", protect, submitQuiz);
 

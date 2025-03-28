@@ -18,13 +18,10 @@ const Login = () => {
     try {
       const { data } = await loginUser(formData);
       
-      // Store token in localStorage
       localStorage.setItem("token", data.token);
 
-      // Update Auth Context
       login(data.user, data.token);
 
-      // Redirect to homepage
       navigate("/");
     } catch (error) {
       console.error("Login error:", error.response?.data?.message || error.message);

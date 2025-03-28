@@ -23,12 +23,10 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Auth APIs
 export const loginUser = (userData) => api.post("/auth/login", userData);
 export const registerUser = (userData) => api.post("/auth/register", userData);
 export const getProfile = () => api.get("/auth/profile");
 
-// Quiz APIs
 export const getQuizzes = () => api.get("/quizzes");
 export const getQuizById = (quizId) => api.get(`/quizzes/${quizId}`);
 

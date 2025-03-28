@@ -13,7 +13,7 @@ connectDB();
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+// routes
 app.use("/api/auth", authRoutes);
 app.use("/api/quizzes", quizRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);

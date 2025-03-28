@@ -4,7 +4,7 @@ exports.getLeaderboard = async (req, res) => {
   try {
     const users = await User.find().select("name scores").lean();
 
-    console.log("Raw User Data:", users); // Debugging
+    console.log("Raw User Data:", users); 
 
     const leaderboard = users
       .map((user) => {
@@ -20,7 +20,7 @@ exports.getLeaderboard = async (req, res) => {
       .sort((a, b) => b.highestScore - a.highestScore)
       .slice(0, 10);
 
-    console.log("Processed Leaderboard:", leaderboard); // Debugging
+    console.log("Processed Leaderboard:", leaderboard); 
 
     res.json(leaderboard);
   } catch (error) {

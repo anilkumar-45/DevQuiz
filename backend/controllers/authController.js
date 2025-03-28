@@ -2,7 +2,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-// Generate JWT Token Function
+
 const generateToken = (user) => {
   return jwt.sign(
     { id: user._id, role: user.role },
@@ -11,7 +11,7 @@ const generateToken = (user) => {
   );
 };
 
-// Register a New User
+
 exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
   }
 };
 
-// Login an Existing User
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -46,7 +46,6 @@ exports.login = async (req, res) => {
   }
 };
 
-// Get User Profile (NEW FUNCTION)
 exports.getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password"); 
