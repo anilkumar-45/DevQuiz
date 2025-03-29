@@ -11,7 +11,7 @@ const { protect, admin } = require("../middleware/authMiddleware.js");
 const router = express.Router();
 
 router.post("/create", protect, admin, createQuiz);
-router.get("/", protect, getAllQuizzes);
+router.get("/", getAllQuizzes);
 router.get("/:id", protect, getQuizById);
 router.post("/add", protect, admin, addQuestion); 
 router.post("/attempt", protect, attemptQuiz);
