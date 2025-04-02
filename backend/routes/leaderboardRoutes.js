@@ -1,8 +1,10 @@
 const express = require("express");
-const router = express.Router();
-const { getLeaderboard } = require("../controllers/leaderboardController");
-const { protect } = require("../middleware/authMiddleware");
+const { addScore, getLeaderboard } = require("../controllers/leaderboardController");
+const protect = require("../middleware/authMiddleware");
 
-router.get("/",protect, getLeaderboard);
+const router = express.Router();
+
+router.post("/", protect, addScore); // Protected route
+router.get("/", getLeaderboard); // Public
 
 module.exports = router;

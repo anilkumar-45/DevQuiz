@@ -2,19 +2,30 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["admin", "user"], default: "user" },
   scores: [
     {
       quizId: { type: mongoose.Schema.Types.ObjectId, ref: "Quiz" },
-      score: Number,
+      category: { type: String, required: true },
+      difficulty: { type: String, enum: ["Easy", "Medium", "Hard"], required: true },
+      score: { type: Number, required: true },
+      date: { type: Date, default: Date.now },
+    },
+  ],
+  quizHistory: [
+    {
+      quizId: { type: mongoose.Schema.Types.ObjectId, ref: "Quiz" },
+      category: { type: String, required: true },
+      difficulty: { type: String, enum: ["Easy", "Medium", "Hard"], required: true },
+      score: { type: Number, required: true },
       date: { type: Date, default: Date.now },
     },
   ],
 });
 
+// Hash password before saving
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
@@ -22,34 +33,19 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-UserSchema.virtual("highestScore").get(function () {
-  if (!this.scores || this.scores.length === 0) return 0;
-  return Math.max(...this.scores.map((score) => score.score || 0));
-});
+// Compare password
+UserSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
 
-UserSchema.methods.updateScore = async function (quizId, newScore) {
-  quizId = new mongoose.Types.ObjectId(quizId);
-  const existingScore = this.scores.find((score) =>
-    score.quizId.equals(quizId)
-  );
-
-  if (existingScore) {
-    if (newScore > existingScore.score) {
-      existingScore.score = newScore;
-      existingScore.date = Date.now();
-    }
-  } else {
-    this.scores.push({ quizId, score: newScore });
-  }
-
+UserSchema.methods.updateScore = async function (quizId, category, score) {
+  this.scores.push({ quizId, category,difficulty, score });
   await this.save();
 };
 
-UserSchema.statics.getLeaderboard = async function () {
-  return this.find()
-    .select("name highestScore")
-    .sort({ highestScore: -1 })
-    .limit(10); // Top 10 users
+UserSchema.methods.updateQuizHistory = async function (quizId, category, difficulty, score) {
+  this.quizHistory.push({ quizId, category, difficulty, score });
+  await this.save();
 };
 
 module.exports = mongoose.model("User", UserSchema);

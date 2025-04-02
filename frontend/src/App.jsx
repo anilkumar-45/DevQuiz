@@ -17,23 +17,24 @@ function App() {
             <Route index element={<QuizList />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route
-              path="/quiz/:id"
-              element={
-                <PrivateRoute>
-                  <QuizAttempt />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/leaderboard"
-              element={
-                <PrivateRoute>
-                  <Leaderboard />
-                </PrivateRoute>
-              }
-            />
+            <Route path="quiz/se" />
           </Route>
+          <Route
+            path="/quiz/:id"
+            element={
+              <PrivateRoute>
+                <QuizAttempt />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/leaderboard"
+            element={
+              <PrivateRoute>
+                <Leaderboard />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </Router>
     </AuthProvider>
